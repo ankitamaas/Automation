@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scraped Results</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #4a90e2;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+        /* Table styling */
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+        }
+        th {
+            background-color: #4a90e2;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+        td {
+            color: #333333;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #e0f7fa;
+        }
+        /* Links styling */
+        a {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 15px;
+            background-color: #4a90e2;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        a:hover {
+            background-color: #357abd;
+        }
+        /* Message styling */
+        .no-results {
+            text-align: center;
+            color: #757575;
+            font-style: italic;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Scraped Results</h1>
+    <table>
+        <tr>
+            <th>Keyword</th>
+            <th>URL</th>
+            <th>Page Number</th>
+            <th>Position</th>
+           
+        </tr>
+        {% for result in results %}
+            <tr>
+                <td>{{ result.keyword.name }}</td>
+                <td><a href="{{ result.url }}" target="_blank">{{ result.url }}</a></td>
+                <td>{{ result.page_number }}</td>
+                <td>{{ result.position }}</td>
+               
+            </tr>
+        {% empty %}
+            <tr><td colspan="5" class="no-results">No results found.</td></tr>
+        {% endfor %}
+    </table>
+
+    <div style="text-align: center;">
+        <a href="{% url 'index' %}">Back to Home</a>
+        <a href="{% url 'download_csv' %}">Download as CSV</a>
+    </div>
+</body>
+</html>
+
+  

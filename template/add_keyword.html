@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Keyword</title>
+    <style>
+        /* General reset for body margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        h1 {
+            color: #4CAF50;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form Styles */
+        form {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+            outline: none;
+        }
+
+        button {
+            padding: 12px;
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            color: #fff;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #43A047, #7CB342);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Keywords Container Styles */
+        #keyword-container {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 10px;
+            min-height: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background-color: #f9f9f9;
+        }
+
+        /* Keyword Chip Styles */
+        .keyword-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            border: 1px solid #4caf50;
+            border-radius: 5px;
+            background-color: #e8f5e9;
+            color: #4CAF50;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .keyword-chip:hover {
+            background-color: #dcedc8;
+        }
+
+        .remove-btn {
+            margin-left: 5px;
+            color: #d32f2f;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            color: #b71c1c;
+        }
+
+        /* Back to Home Link */
+        a {
+            text-decoration: none;
+            color: #2196F3;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            display: inline-block;
+            transition: color 0.3s ease;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Add Keyword</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+    
+        <label for="category">Select Category:</label>
+        <select name="category" id="category" required>
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    
+        <div style="display: flex; align-items: center;">
+            <label for="name">Keyword Name:</label>
+            <input type="text" id="name" placeholder="Enter a keyword">
+            <a style="margin-left: 10px; cursor: pointer; padding: 5px; background-color: #4caf50; color: white; border-radius: 5px;" 
+               onclick="handleAddKeyword()">Add</a>
+        </div>
+    
+        <div style="text-align: center;">
+            <div id="keyword-container" style="display: none;">
+                <!-- Keywords and hidden inputs will be added here -->
+            </div>
+        </div>
+    
+        <div style="text-align: center;">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+    
+    <script>
+        function handleAddKeyword() {
+            const inputElement = document.getElementById('name');
+            const keywordContainer = document.getElementById('keyword-container');
+            const keyword = inputElement.value.trim();
+    
+            if (keyword) {
+                // Show the container if hidden
+                keywordContainer.style.display = 'flex';
+    
+                // Create a keyword chip with a remove button
+                const keywordChip = document.createElement('div');
+                keywordChip.classList.add('keyword-chip');
+                keywordChip.textContent = keyword;
+    
+                // Add hidden input for the keyword
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'keywords';
+                hiddenInput.value = keyword;
+
+                // Add remove button
+                const removeBtn = document.createElement('span');
+                removeBtn.classList.add('remove-btn');
+                removeBtn.innerHTML = '&times;';
+                removeBtn.onclick = () => keywordContainer.removeChild(keywordChip);
+                
+                // Append elements
+                keywordChip.appendChild(removeBtn);
+                keywordChip.appendChild(hiddenInput);
+                keywordContainer.appendChild(keywordChip);
+
+                inputElement.value = '';
+            } else {
+                alert('Please enter a keyword.');
+            }
+        }
+    </script>
+
+    <a href="{% url 'index' %}">Back to Home</a>
+
+</body>
+</html>

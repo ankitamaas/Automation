@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Category</title>
+    <style>
+        /* General reset for body margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #ffecd2, #fcb69f);
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        h1 {
+            color: #ff7043;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form Styles */
+        form {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        input {
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #ff7043;
+            box-shadow: 0 0 8px rgba(255, 112, 67, 0.3);
+            outline: none;
+        }
+
+        button {
+            padding: 12px;
+            background: linear-gradient(to right, #ff7043, #ff8a65);
+            color: #fff;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #e64a19, #f4511e);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Back to Home Link */
+        a {
+            text-decoration: none;
+            color: #ff7043;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            display: inline-block;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #e64a19;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Create Category</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="name">Category Name:</label>
+        <input type="text" name="name" id="name" required>
+
+        <label for="schedule_time">Schedule Time:</label>
+        <input type="datetime-local" name="schedule_time" id="schedule_time" required>
+
+        <button type="submit">Save</button>
+    </form>
+
+    <a href="{% url 'index' %}">Back to Home</a>
+
+</body>
+</html>
